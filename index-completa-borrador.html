@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don Precio — ¿Ya sabe si está cobrando bien?</title>
+<meta name="description" content="Un compa por WhatsApp que le dice cómo anda contra el súper y contra otros tenderos, sin apps, sin costo para empezar.">
+<style>
+  :root {
+    --ink: #1a1410; --paper: #f0e4c9; --marigold: #eab13a; --marigold-deep: #c98a1e;
+    --oxide: #d0492f; --sage: #6f9159; --sage-deep: #3f5a34; --cream: #faf3e0;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--ink); color: var(--cream);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  h1, h2, .display { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-weight: 700; text-wrap: balance; margin: 0; }
+  a { color: inherit; }
+
+  .topbar {
+    max-width: 640px; margin: 0 auto; padding: 1.4rem 1.6rem 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.05rem; }
+  .topbar .brand svg { width: 30px; height: 30px; flex-shrink: 0; }
+  .topbar a.login { font-size: 0.88rem; color: #d8c7a6; text-decoration: none; border-bottom: 1px solid rgba(216,199,166,0.4); padding-bottom: 1px; }
+  .topbar a.login:hover { color: var(--marigold); border-color: var(--marigold); }
+
+  .poster { max-width: 640px; margin: 0 auto; padding: 2.2rem 1.6rem 4rem; position: relative; }
+
+  .poster::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(234,177,58,0.06) 1.5px, transparent 1.6px);
+    background-size: 28px 28px;
+  }
+
+  .hero { text-align: center; padding-top: 1.5rem; }
+  .hero .mark { width: 148px; height: 148px; margin: 0 auto 1rem; display: block; }
+  .hero .eyebrow { font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--marigold); font-weight: 700; margin-bottom: 0.6rem; }
+  .hero h1 { font-size: clamp(2rem, 7vw, 2.9rem); line-height: 1.1; }
+  .hero h1 em { font-style: normal; color: var(--marigold); }
+  .hero p { font-size: 1.15rem; color: #d8c7a6; max-width: 36ch; margin: 1.1rem auto 0; line-height: 1.5; }
+
+  .ticket-divider { display: flex; align-items: center; gap: 0.8rem; margin: 2.8rem 0; }
+  .ticket-divider::before, .ticket-divider::after { content: ""; flex: 1; border-top: 2px dashed rgba(240,228,201,0.25); }
+  .ticket-divider span { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #a3927a; white-space: nowrap; }
+
+  .chat-mock { background: #241c15; border: 1px solid #3a2e21; border-radius: 16px; padding: 1.4rem; }
+  .bubble { border-radius: 14px; padding: 0.75rem 1rem; margin-bottom: 0.7rem; font-size: 0.98rem; line-height: 1.4; max-width: 88%; }
+  .bubble.in { background: #3a2e21; color: var(--cream); border-bottom-left-radius: 3px; }
+  .bubble.out { background: var(--sage); color: #10190d; margin-left: auto; border-bottom-right-radius: 3px; white-space: pre-wrap; font-size: 0.92rem; }
+  .bubble:last-child { margin-bottom: 0; }
+
+  .benefit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  @media (max-width: 420px) { .benefit-grid { grid-template-columns: 1fr; } }
+  .benefit { background: #241c15; border: 1px solid #3a2e21; border-radius: 12px; padding: 1.1rem; text-align: center; }
+  .benefit .ico { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .benefit b { display: block; font-size: 0.98rem; }
+
+  .also-line { text-align: center; font-size: 0.92rem; color: #a3927a; margin-top: 1.1rem; line-height: 1.6; }
+  .also-line strong { color: #d8c7a6; font-weight: 600; }
+
+  .tag-wrap { display: flex; justify-content: center; margin: 1rem 0 0.5rem; }
+  .price-tag {
+    position: relative; transform: rotate(-4deg);
+    background: var(--oxide); color: var(--cream);
+    padding: 1.6rem 2.4rem 1.6rem 2rem;
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 14% 100%, 0 50%);
+    text-align: center; box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+  }
+  .price-tag::after {
+    content: ""; position: absolute; left: 22px; top: 50%; transform: translateY(-50%);
+    width: 10px; height: 10px; border-radius: 50%; background: var(--ink);
+  }
+  .price-tag .big { font-family: Georgia, serif; font-weight: 700; font-size: 2.2rem; line-height: 1; }
+  .price-tag .small { font-size: 0.85rem; margin-top: 0.4rem; opacity: 0.92; }
+
+  .step-row { display: grid; grid-template-columns: 2.2rem 1fr; gap: 0.9rem; align-items: center; margin-bottom: 0.9rem; }
+  .step-row .n { width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--marigold); color: var(--ink); display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-weight: 700; }
+
+  .cta-block { text-align: center; margin-top: 2.6rem; }
+  .cta-btn {
+    display: inline-block; background: var(--sage); color: #10190d; font-weight: 700;
+    padding: 1.1rem 2.6rem; border-radius: 999px; font-size: 1.15rem; text-decoration: none;
+  }
+  .cta-btn:hover { background: #7fa367; }
+  .cta-btn[aria-disabled="true"] { background: #4a4136; color: #a3927a; cursor: not-allowed; pointer-events: none; }
+  .cta-sub { margin-top: 0.9rem; font-size: 0.85rem; color: #a3927a; }
+
+  footer { text-align: center; padding: 2rem 1.6rem 2.5rem; font-size: 0.8rem; color: #6b5f4d; }
+  footer a { color: #a3927a; text-decoration: underline; text-underline-offset: 2px; }
+
+  ::selection { background: var(--marigold); color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="120" cy="120" r="118" fill="#eab13a"/>
+      <path d="M55,240 Q58,168 120,163 Q182,168 185,240 Z" fill="#d0492f"/>
+      <path d="M93,178 L120,202 L147,178 L142,164 L98,164 Z" fill="#f0e4c9"/>
+      <ellipse cx="120" cy="108" rx="53" ry="57" fill="#e8b98c"/>
+      <ellipse cx="65" cy="110" rx="10" ry="15" fill="#e8b98c"/>
+      <ellipse cx="175" cy="110" rx="10" ry="15" fill="#e8b98c"/>
+      <path d="M68,92 Q64,55 120,53 Q176,55 172,92 Q166,66 120,64 Q74,66 68,92 Z" fill="#e4ddc9"/>
+      <circle cx="99" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
+      <circle cx="141" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
+      <line x1="114" y1="106" x2="126" y2="106" stroke="#1a1410" stroke-width="4.5"/>
+      <line x1="84" y1="102" x2="70" y2="98" stroke="#1a1410" stroke-width="4"/>
+      <line x1="156" y1="102" x2="170" y2="98" stroke="#1a1410" stroke-width="4"/>
+      <path d="M82,133 Q101,150 120,137 Q139,150 158,133 Q140,124 120,129 Q100,124 82,133 Z" fill="#e4ddc9"/>
+      <path d="M104,151 Q120,162 136,151" fill="none" stroke="#1a1410" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+    Don Precio
+  </div>
+  <a class="login" href="https://ingreso.donprecio.mx">Ya tengo cuenta →</a>
+</div>
+
+<div class="poster">
+
+  <div class="hero">
+    <div class="eyebrow">Para tiendas de abarrotes</div>
+    <h1>¿Ya sabe si está <em>cobrando bien</em>?</h1>
+    <p>Un compa por WhatsApp que se lo dice al toque — sin apps, sin costo para empezar.</p>
+  </div>
+
+  <div class="ticket-divider"><span>así se ve</span></div>
+
+  <div class="chat-mock">
+    <div class="bubble in">compro el aceite a 41 y lo doy a 48</div>
+    <div class="bubble out">🏪 En el súper anda en $35.29 el litro
+⚠️ Usted lo tiene 36% más caro
+🟢 Su margen: 14.6%
+💡 Le conviene bajarlo a $34.23</div>
+  </div>
+
+  <div class="ticket-divider"><span>lo que le dice</span></div>
+
+  <div class="benefit-grid">
+    <div class="benefit"><div class="ico">🏪</div><b>Cómo anda contra el súper</b></div>
+    <div class="benefit"><div class="ico">🤝</div><b>Cómo andan otros tenderos (anónimo)</b></div>
+    <div class="benefit"><div class="ico">💰</div><b>Su margen real</b></div>
+    <div class="benefit"><div class="ico">💡</div><b>Un precio sugerido</b></div>
+  </div>
+
+  <p class="also-line">Y también: <strong>mande foto de la factura de su proveedor</strong> y le carga todos los costos de un jalón, dígale su corte del día para llevar sus cuentas, y cada quincena le avisa qué está subiendo en su zona.</p>
+
+  <div class="tag-wrap">
+    <div class="price-tag">
+      <div class="big">15 gratis</div>
+      <div class="small">consultas cada mes, sin tarjeta</div>
+    </div>
+  </div>
+
+  <div class="ticket-divider"><span>así se empieza</span></div>
+
+  <div class="step-row"><div class="n">1</div><div>Mándele un WhatsApp a Don Precio</div></div>
+  <div class="step-row"><div class="n">2</div><div>Dígale el nombre de su tienda y su ciudad</div></div>
+  <div class="step-row"><div class="n">3</div><div>Pregunte cualquier producto o dígale su precio</div></div>
+
+  <div class="cta-block">
+    <a class="cta-btn" id="cta-whatsapp" href="#" aria-disabled="true">Escribirle a Don Precio →</a>
+    <p class="cta-sub">Sus precios y su costo son suyos — nunca se comparten con el cliente.</p>
+  </div>
+
+</div>
+
+<footer>
+  Don Precio © 2026 · Guadalajara, Jalisco ·
+  <a href="https://ingreso.donprecio.mx">Portal del tendero</a>
+</footer>
+
+<script>
+  // TODO: en cuanto exista el número real de WhatsApp Business (paso 7 del
+  // lanzamiento), reemplazar por: https://wa.me/52XXXXXXXXXX?text=Hola%20Don%20Precio
+  // Mientras tanto el botón queda deshabilitado para no prometer algo que
+  // todavía no conecta a ningún lado.
+</script>
+
+</body>
+</html>
