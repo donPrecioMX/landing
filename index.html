@@ -34,7 +34,7 @@
   nav.top { padding: 1.4rem 0; }
   nav.top .row { display: flex; align-items: center; justify-content: space-between; }
   .brand { display: flex; align-items: center; gap: 0.55rem; font-weight: 700; font-size: 1.08rem; }
-  .brand svg { width: 32px; height: 32px; flex-shrink: 0; }
+  .brand svg, .brand img { width: 32px; height: 32px; flex-shrink: 0; }
   a.login-link {
     font-size: 0.9rem; font-weight: 600; color: var(--ink);
     text-decoration: none; border-bottom: 2px solid var(--marigold); padding-bottom: 2px;
@@ -58,7 +58,7 @@
   .hero .ctas { margin-top: 2.1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
 
   .hero-mascot { position: relative; display: flex; justify-content: center; }
-  .hero-mascot svg { width: min(320px, 78vw); height: auto; filter: drop-shadow(0 24px 34px rgba(26,20,16,0.22)); }
+  .hero-mascot svg, .hero-mascot img { width: min(320px, 78vw); height: auto; filter: drop-shadow(0 24px 34px rgba(26,20,16,0.22)); }
   .hero-mascot::before {
     content: ""; position: absolute; inset: 6% 10%; border-radius: 50%;
     background: radial-gradient(circle, var(--marigold-pale) 0%, transparent 68%);
@@ -275,22 +275,7 @@
 <nav class="top wrap">
   <div class="row">
     <div class="brand">
-      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="120" cy="120" r="118" fill="#eab13a"/>
-        <path d="M55,240 Q58,168 120,163 Q182,168 185,240 Z" fill="#d0492f"/>
-        <path d="M93,178 L120,202 L147,178 L142,164 L98,164 Z" fill="#f0e4c9"/>
-        <ellipse cx="120" cy="108" rx="53" ry="57" fill="#e8b98c"/>
-        <ellipse cx="65" cy="110" rx="10" ry="15" fill="#e8b98c"/>
-        <ellipse cx="175" cy="110" rx="10" ry="15" fill="#e8b98c"/>
-        <path d="M68,92 Q64,55 120,53 Q176,55 172,92 Q166,66 120,64 Q74,66 68,92 Z" fill="#e4ddc9"/>
-        <circle cx="99" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
-        <circle cx="141" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
-        <line x1="114" y1="106" x2="126" y2="106" stroke="#1a1410" stroke-width="4.5"/>
-        <line x1="84" y1="102" x2="70" y2="98" stroke="#1a1410" stroke-width="4"/>
-        <line x1="156" y1="102" x2="170" y2="98" stroke="#1a1410" stroke-width="4"/>
-        <path d="M82,133 Q101,150 120,137 Q139,150 158,133 Q140,124 120,129 Q100,124 82,133 Z" fill="#e4ddc9"/>
-        <path d="M104,151 Q120,162 136,151" fill="none" stroke="#1a1410" stroke-width="3.5" stroke-linecap="round"/>
-      </svg>
+      <img src="mascot.svg" alt="" aria-hidden="true">
       Don Precio
     </div>
     <a class="login-link" href="https://ingreso.donprecio.mx">Ya tengo cuenta →</a>
@@ -310,22 +295,7 @@
     </div>
     <div class="hero-mascot reveal">
       <div class="hero-badge">✅ "Ya sé cómo ando"</div>
-      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="120" cy="120" r="118" fill="#eab13a"/>
-        <path d="M55,240 Q58,168 120,163 Q182,168 185,240 Z" fill="#d0492f"/>
-        <path d="M93,178 L120,202 L147,178 L142,164 L98,164 Z" fill="#f0e4c9"/>
-        <ellipse cx="120" cy="108" rx="53" ry="57" fill="#e8b98c"/>
-        <ellipse cx="65" cy="110" rx="10" ry="15" fill="#e8b98c"/>
-        <ellipse cx="175" cy="110" rx="10" ry="15" fill="#e8b98c"/>
-        <path d="M68,92 Q64,55 120,53 Q176,55 172,92 Q166,66 120,64 Q74,66 68,92 Z" fill="#e4ddc9"/>
-        <circle cx="99" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
-        <circle cx="141" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
-        <line x1="114" y1="106" x2="126" y2="106" stroke="#1a1410" stroke-width="4.5"/>
-        <line x1="84" y1="102" x2="70" y2="98" stroke="#1a1410" stroke-width="4"/>
-        <line x1="156" y1="102" x2="170" y2="98" stroke="#1a1410" stroke-width="4"/>
-        <path d="M82,133 Q101,150 120,137 Q139,150 158,133 Q140,124 120,129 Q100,124 82,133 Z" fill="#e4ddc9"/>
-        <path d="M104,151 Q120,162 136,151" fill="none" stroke="#1a1410" stroke-width="3.5" stroke-linecap="round"/>
-      </svg>
+      <img src="mascot.svg" alt="Mascota de Don Precio, un tendero sonriente">
     </div>
   </div>
 
