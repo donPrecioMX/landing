@@ -63,20 +63,27 @@
     z-index: -1;
   }
   .hero-badge {
-    position: absolute; top: 0; right: 6px; background: var(--card); border: 1px solid var(--line);
-    border-radius: 14px; padding: 0.55rem 0.85rem; font-size: 0.82rem; font-weight: 700;
-    white-space: nowrap; box-shadow: 0 10px 22px -10px rgba(26,20,16,0.25); transform: rotate(-4deg);
+    position: absolute; top: 0; right: 6px; background: var(--ink); color: var(--paper);
+    border-radius: 14px; padding: 0.6rem 1rem; font-size: 0.92rem; font-weight: 700;
+    white-space: nowrap; box-shadow: 0 10px 22px -10px rgba(26,20,16,0.35); transform: rotate(-4deg);
   }
   @media (max-width: 900px) { .hero-badge { display: none; } }
 
   .btn-primary {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--ink); color: var(--paper); font-weight: 700; font-size: 1.02rem;
+    background: var(--marigold); color: var(--ink); font-weight: 700; font-size: 1.02rem;
     padding: 0.95rem 1.8rem; border-radius: 999px; text-decoration: none;
     transition: transform 0.15s ease, background 0.15s ease;
   }
-  .btn-primary:hover { background: var(--oxide-deep); transform: translateY(-1px); }
-  .btn-primary[aria-disabled="true"] { background: #c9bd9e; color: #fff; cursor: not-allowed; pointer-events: none; }
+  .btn-primary:hover { background: var(--marigold-deep); transform: translateY(-1px); }
+  /* Deshabilitado a proposito hasta conectar WhatsApp real (paso 7 del
+     lanzamiento) — antes solo se veia como un boton mal hecho (color
+     apagado sin explicacion). Ahora dice claramente "muy pronto" con un
+     tratamiento con guiones que lee como "en construccion", no como error. */
+  .btn-primary[aria-disabled="true"] {
+    background: transparent; color: var(--ink-soft); border: 2px dashed var(--line);
+    cursor: not-allowed; pointer-events: none;
+  }
   .btn-secondary {
     display: inline-flex; align-items: center; gap: 0.4rem;
     color: var(--ink); font-weight: 600; font-size: 1rem; text-decoration: none;
@@ -147,6 +154,10 @@
   .bubble.in { background: #3a2e21; color: #f0e4c9; border-bottom-left-radius: 3px; }
   .bubble.out { background: var(--sage); color: #f4fbf0; margin-left: auto; border-bottom-right-radius: 3px; white-space: pre-wrap; font-size: 0.92rem; }
   .bubble:last-child { margin-bottom: 0; }
+  .privacy-line {
+    text-align: center; font-size: 0.9rem; color: var(--ink-soft);
+    margin: 1.6rem auto 0; max-width: 40ch;
+  }
 
   /* ---- benefit grid ---- */
   .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
@@ -176,11 +187,20 @@
   }
   .feature:hover { transform: translateY(-3px); box-shadow: 0 20px 36px -20px rgba(26,20,16,0.32); }
   .feature .ico {
-    width: 3rem; height: 3rem; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    width: 3rem; height: 3rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-size: 1.4rem; background: var(--marigold-pale); margin-bottom: 1rem;
   }
   .feature h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
   .feature p { color: var(--ink-soft); font-size: 0.94rem; line-height: 1.55; margin: 0; }
+
+  /* ---- faq ---- */
+  .faq { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.1rem; }
+  .faq-item {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem 1.6rem;
+    box-shadow: 0 10px 22px -18px rgba(26,20,16,0.35);
+  }
+  .faq-item h3 { font-size: 1.02rem; margin-bottom: 0.45rem; }
+  .faq-item p { color: var(--ink-soft); font-size: 0.94rem; line-height: 1.55; margin: 0; }
 
   /* ---- pricing ---- */
   .price-card {
@@ -254,12 +274,12 @@
       <h1>¿Ya sabe si está <em>cobrando bien</em>?</h1>
       <p class="sub">Un compa por WhatsApp que se lo dice al toque — cómo anda contra el súper, cómo andan otros tenderos de su zona, y su margen real. Sin apps, sin costo para empezar.</p>
       <div class="ctas">
-        <a class="btn-primary" href="#" aria-disabled="true">Escribirle a Don Precio →</a>
+        <a class="btn-primary" href="#" aria-disabled="true">🕐 Muy pronto por WhatsApp</a>
         <a class="btn-secondary" href="#como-funciona">Ver cómo funciona</a>
       </div>
     </div>
     <div class="hero-mascot reveal">
-      <div class="hero-badge">"Ya sé cómo ando" 🎉</div>
+      <div class="hero-badge">✅ "Ya sé cómo ando"</div>
       <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <circle cx="120" cy="120" r="118" fill="#eab13a"/>
         <path d="M55,240 Q58,168 120,163 Q182,168 185,240 Z" fill="#d0492f"/>
@@ -342,6 +362,7 @@
 🟢 Su margen: 14.6%
 💡 Podría subirlo a $51.25 y sigue más barato que el súper, con mejor margen</div>
       </div>
+      <p class="privacy-line">🔒 Sus precios y su costo son suyos — nunca se comparten con el cliente.</p>
     </div>
   </div>
 </section>
@@ -390,6 +411,29 @@
 <section>
   <div class="wrap">
     <div class="section-head reveal">
+      <div class="eyebrow-line">Antes de que pregunte</div>
+      <h2>Lo que todo tendero quiere saber</h2>
+    </div>
+    <div class="faq reveal">
+      <div class="faq-item">
+        <h3>¿Van a usar mi número para mandarme publicidad?</h3>
+        <p>No le vendemos su número a nadie ni le mandamos anuncios. Cada quincena le mandamos un resumen de cómo se mueven los precios en su zona — eso es información que le sirve, no publicidad.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿De dónde sacan los precios del súper?</h3>
+        <p>De datos oficiales de Profeco (sí, del gobierno) y verificación directa en las páginas de los supermercados. Nunca inventamos un precio.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Mis datos y mi margen los ve alguien más?</h3>
+        <p>No. Sus precios y su costo son suyos. Cuando le decimos "cómo andan otros tenderos", es un promedio de varias tiendas juntas — nunca le enseñamos el nombre ni el precio de un tendero en particular, ni el suyo a otros.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
       <div class="eyebrow-line">Precio</div>
       <h2>Empiece gratis, sin tarjeta</h2>
     </div>
@@ -403,7 +447,7 @@
         <li>Sin tarjeta, sin compromiso</li>
       </ul>
     </div>
-    <p class="price-note">¿Necesita consultas ilimitadas? Pregunte por el Plan Pro cuando le llegue el aviso de que ya usó sus 15 gratis.</p>
+    <p class="price-note">¿Necesita consultas ilimitadas? Pregunte por el Plan Pro cuando le llegue el aviso de que ya usó sus 15 gratis — sin permanencia, cancele cuando quiera.</p>
   </div>
 </section>
 
@@ -412,7 +456,7 @@
     <h2>Sepa si está cobrando bien, hoy mismo</h2>
     <p>Un mensaje, y ya sabe cómo anda contra el súper y contra otros tenderos de su zona.</p>
     <div class="ctas">
-      <a class="btn-primary" href="#" aria-disabled="true">Escribirle a Don Precio →</a>
+      <a class="btn-primary" href="#" aria-disabled="true">🕐 Muy pronto por WhatsApp</a>
     </div>
     <p class="price-note">Sus precios y su costo son suyos — nunca se comparten con el cliente.</p>
   </div>
