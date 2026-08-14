@@ -138,6 +138,16 @@
   .step p { color: var(--ink-soft); line-height: 1.55; max-width: 52ch; margin: 0; }
   @media (max-width: 560px) { .step { grid-template-columns: 1fr; gap: 0.5rem; } .step .n { font-size: 1.6rem; } }
 
+  /* Burbuja de mensaje minimalista (sin chrome de app: sin hora, sin bateria,
+     sin header de contacto) para los pasos 01/02 — misma paleta que el
+     mockup grande de "asi se ve" (bubble.in), nunca el verde de Meta, para
+     que se sienta parte de la misma demostracion y no una captura ajena. */
+  .mini-bubble {
+    display: inline-block; margin-top: 0.9rem; background: #3a2e21; color: #f0e4c9;
+    padding: 0.6rem 1rem; border-radius: 14px; border-bottom-left-radius: 3px;
+    font-size: 0.9rem; max-width: 300px;
+  }
+
   /* ---- demo chat ---- */
   .demo-shell { max-width: 480px; margin: 0 auto; position: relative; }
   .chat-mock {
@@ -150,6 +160,24 @@
     font-weight: 700; font-size: 0.72rem; padding: 0.4rem 0.8rem; border-radius: 999px;
     white-space: nowrap; transform: rotate(4deg); box-shadow: 0 8px 16px -6px rgba(160,54,33,0.6);
   }
+  .demo-carousel { overflow: hidden; }
+  .demo-track { display: flex; transition: transform 0.4s ease; }
+  @media (prefers-reduced-motion: reduce) { .demo-track { transition: none; } }
+  .demo-slide { flex: 0 0 100%; min-width: 100%; padding: 10px; box-sizing: border-box; }
+  .demo-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 0.6rem; }
+  .demo-arrow {
+    width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink); font-size: 1.2rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease;
+  }
+  .demo-arrow:hover { background: var(--marigold-pale); }
+  .demo-dots { display: flex; gap: 0.5rem; }
+  .demo-dot {
+    width: 0.55rem; height: 0.55rem; border-radius: 50%; border: none; padding: 0;
+    background: var(--line); cursor: pointer;
+  }
+  .demo-dot.active { background: var(--oxide); }
+
   .bubble { border-radius: 14px; padding: 0.8rem 1.05rem; margin-bottom: 0.75rem; font-size: 0.98rem; line-height: 1.45; max-width: 88%; }
   .bubble.in { background: #3a2e21; color: #f0e4c9; border-bottom-left-radius: 3px; }
   .bubble.out { background: var(--sage); color: #f4fbf0; margin-left: auto; border-bottom-right-radius: 3px; white-space: pre-wrap; font-size: 0.92rem; }
@@ -327,6 +355,7 @@
         <div>
           <h3>Mándele un WhatsApp a Don Precio</h3>
           <p>Sin descargar nada, sin crear cuenta con contraseña. Solo escríbale como le escribiría a un conocido de confianza.</p>
+          <div class="mini-bubble">Hola, buenas tardes 👋</div>
         </div>
       </div>
       <div class="step reveal">
@@ -334,6 +363,7 @@
         <div>
           <h3>Dígale el nombre de su tienda y su ciudad</h3>
           <p>Con eso ya sabe de dónde es, y puede comparar sus precios contra el súper y contra otros tenderos de su misma zona — nunca contra tiendas de otro lado.</p>
+          <div class="mini-bubble">Abarrotes Lupita, en Zapopan</div>
         </div>
       </div>
       <div class="step reveal">
@@ -354,13 +384,54 @@
       <h2>Le contesta como un compa, no como un robot</h2>
     </div>
     <div class="demo-shell reveal">
-      <div class="demo-stamp">conversación real ✓</div>
-      <div class="chat-mock">
-        <div class="bubble in">compro el aceite a 41 y lo doy a 48</div>
-        <div class="bubble out">🏪 En el súper anda en $58.00 el litro
+      <div class="demo-stamp">conversaciones reales ✓</div>
+      <div class="demo-carousel">
+        <div class="demo-track" id="demo-track">
+          <div class="demo-slide">
+            <div class="chat-mock">
+              <div class="bubble in">compro el aceite a 41 y lo doy a 48</div>
+              <div class="bubble out">🏪 En el súper anda en $58.00 el litro
 ✅ Usted lo tiene 17% más barato
 🟢 Su margen: 14.6%
 💡 Podría subirlo a $51.25 y sigue más barato que el súper, con mejor margen</div>
+            </div>
+          </div>
+          <div class="demo-slide">
+            <div class="chat-mock">
+              <div class="bubble in">oye cómo ando en el arroz</div>
+              <div class="bubble out">🏪 Supermercados en su zona: prom $18.22/kg (4 cadenas)
+🏘️ Otros tenderos venden en: prom $24.00 (9 tiendas)
+💬 ¿Y usted en cuánto lo tiene?</div>
+            </div>
+          </div>
+          <div class="demo-slide">
+            <div class="chat-mock">
+              <div class="bubble in">hoy vendí 2800, gasté 350</div>
+              <div class="bubble out">📒 Corte de hoy guardado
+💰 Vendió: $2,800.00
+💸 Gastó: $350.00
+✅ Neto: $2,450.00</div>
+            </div>
+          </div>
+          <div class="demo-slide">
+            <div class="chat-mock">
+              <div class="bubble in">compré el paquete de 12 huevos a 30 y los vendo a 35</div>
+              <div class="bubble out">📦 Paquete de 12 a $30.00 → $2.50 por pieza
+🟢 Su margen: 92.9%
+❓ Ese margen se ve muy alto para venta por pieza — ¿el precio que dio ($35) es por cada uno, o por el paquete completo?</div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-controls">
+          <button class="demo-arrow" id="demo-prev" type="button" aria-label="Ejemplo anterior">‹</button>
+          <div class="demo-dots" id="demo-dots">
+            <button class="demo-dot" type="button" aria-label="Ejemplo 1: margen"></button>
+            <button class="demo-dot" type="button" aria-label="Ejemplo 2: consulta simple"></button>
+            <button class="demo-dot" type="button" aria-label="Ejemplo 3: corte de caja"></button>
+            <button class="demo-dot" type="button" aria-label="Ejemplo 4: paquete"></button>
+          </div>
+          <button class="demo-arrow" id="demo-next" type="button" aria-label="Siguiente ejemplo">›</button>
+        </div>
       </div>
       <p class="privacy-line">🔒 Sus precios y su costo son suyos — nunca se comparten con el cliente.</p>
     </div>
@@ -487,6 +558,30 @@
   } else {
     document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
   }
+
+  // Carrusel de ejemplos en "Así se ve" — varios casos reales (margen,
+  // consulta simple, corte de caja, paquete) en vez de uno solo, para
+  // que se vea que sirve para mas que un solo tipo de mensaje.
+  (function () {
+    const track = document.getElementById('demo-track');
+    const dots = document.querySelectorAll('#demo-dots .demo-dot');
+    const prevBtn = document.getElementById('demo-prev');
+    const nextBtn = document.getElementById('demo-next');
+    if (!track || !dots.length) return;
+    let index = 0;
+    function render() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+    function go(delta) {
+      index = (index + delta + dots.length) % dots.length;
+      render();
+    }
+    prevBtn.addEventListener('click', () => go(-1));
+    nextBtn.addEventListener('click', () => go(1));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { index = i; render(); }));
+    render();
+  })();
 </script>
 
 </body>
