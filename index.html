@@ -20,6 +20,8 @@
     margin: 0; background: var(--paper); color: var(--ink);
     font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(circle, rgba(208,73,47,0.07) 1.6px, transparent 1.7px);
+    background-size: 26px 26px;
   }
   h1, h2, h3, .display { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-weight: 700; text-wrap: balance; margin: 0; }
   a { color: inherit; }
@@ -38,16 +40,34 @@
   a.login-link:hover { color: var(--oxide-deep); border-color: var(--oxide); }
 
   /* ---- hero ---- */
-  .hero { padding: 3.5rem 0 4rem; text-align: center; }
+  .hero { padding: 3rem 0 2rem; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 2.5rem; align-items: center; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; text-align: center; } }
+  .hero-copy .ctas, .hero-copy .sub { margin-left: auto; margin-right: auto; }
+  @media (min-width: 861px) { .hero-copy .ctas, .hero-copy .sub { margin-left: 0; margin-right: 0; } .hero-copy { text-align: left; } }
   .eyebrow {
     display: inline-block; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--oxide-deep); font-weight: 700; margin-bottom: 1.1rem;
     background: var(--marigold-pale); padding: 0.35rem 0.9rem; border-radius: 999px;
   }
-  .hero h1 { font-size: clamp(2.3rem, 5.5vw, 3.6rem); line-height: 1.08; letter-spacing: -0.01em; }
+  .hero h1 { font-size: clamp(2.3rem, 4.6vw, 3.4rem); line-height: 1.08; letter-spacing: -0.01em; }
   .hero h1 em { font-style: normal; color: var(--oxide); }
-  .hero .sub { font-size: 1.2rem; color: var(--ink-soft); max-width: 40ch; margin: 1.3rem auto 0; line-height: 1.55; }
-  .hero .ctas { margin-top: 2.1rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .hero .sub { font-size: 1.15rem; color: var(--ink-soft); max-width: 42ch; margin: 1.3rem 0 0; line-height: 1.55; }
+  .hero .ctas { margin-top: 2.1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .hero-mascot { position: relative; display: flex; justify-content: center; }
+  .hero-mascot svg { width: min(320px, 78vw); height: auto; filter: drop-shadow(0 24px 34px rgba(26,20,16,0.22)); }
+  .hero-mascot::before {
+    content: ""; position: absolute; inset: 6% 10%; border-radius: 50%;
+    background: radial-gradient(circle, var(--marigold-pale) 0%, transparent 68%);
+    z-index: -1;
+  }
+  .hero-badge {
+    position: absolute; top: 0; right: 6px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 0.55rem 0.85rem; font-size: 0.82rem; font-weight: 700;
+    white-space: nowrap; box-shadow: 0 10px 22px -10px rgba(26,20,16,0.25); transform: rotate(-4deg);
+  }
+  @media (max-width: 900px) { .hero-badge { display: none; } }
 
   .btn-primary {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -68,12 +88,26 @@
   .stats {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
     background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
-    margin-top: 3.2rem;
+    margin-top: 3.4rem;
+    box-shadow: 0 18px 40px -24px rgba(26,20,16,0.3);
   }
   @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
   .stat { background: var(--card); padding: 1.8rem 1.4rem; text-align: center; }
   .stat .n { font-size: clamp(1.9rem, 4vw, 2.5rem); font-weight: 700; font-family: Georgia, serif; color: var(--oxide-deep); }
   .stat .l { font-size: 0.88rem; color: var(--ink-soft); margin-top: 0.35rem; }
+
+  /* ---- bloque solido de color, para romper la monotonia del fondo claro ---- */
+  section.bold {
+    background: var(--ink); color: var(--paper);
+    background-image: radial-gradient(circle at 85% 20%, rgba(234,177,58,0.18), transparent 55%);
+  }
+  section.bold .eyebrow-line { color: var(--marigold); }
+  section.bold .section-head h2 { color: var(--paper); }
+  section.bold .step { border-top-color: rgba(240,228,201,0.15); }
+  section.bold .step:last-child { border-bottom-color: rgba(240,228,201,0.15); }
+  section.bold .step h3 { color: var(--paper); }
+  section.bold .step p { color: #cbb996; }
+  section.bold .step .n { color: var(--marigold); }
 
   /* ---- section shell ---- */
   section { padding: 5rem 0; }
@@ -98,8 +132,17 @@
   @media (max-width: 560px) { .step { grid-template-columns: 1fr; gap: 0.5rem; } .step .n { font-size: 1.6rem; } }
 
   /* ---- demo chat ---- */
-  .demo-shell { max-width: 480px; margin: 0 auto; }
-  .chat-mock { background: var(--ink); border-radius: 20px; padding: 1.6rem; box-shadow: 0 20px 50px -20px rgba(26,20,16,0.4); }
+  .demo-shell { max-width: 480px; margin: 0 auto; position: relative; }
+  .chat-mock {
+    background: var(--ink); border-radius: 20px; padding: 1.6rem;
+    box-shadow: 0 28px 60px -22px rgba(26,20,16,0.5);
+    transform: rotate(-1.2deg);
+  }
+  .demo-stamp {
+    position: absolute; top: 10px; right: 10px; z-index: 2; background: var(--oxide); color: var(--paper);
+    font-weight: 700; font-size: 0.72rem; padding: 0.4rem 0.8rem; border-radius: 999px;
+    white-space: nowrap; transform: rotate(4deg); box-shadow: 0 8px 16px -6px rgba(160,54,33,0.6);
+  }
   .bubble { border-radius: 14px; padding: 0.8rem 1.05rem; margin-bottom: 0.75rem; font-size: 0.98rem; line-height: 1.45; max-width: 88%; }
   .bubble.in { background: #3a2e21; color: #f0e4c9; border-bottom-left-radius: 3px; }
   .bubble.out { background: var(--sage); color: #f4fbf0; margin-left: auto; border-bottom-right-radius: 3px; white-space: pre-wrap; font-size: 0.92rem; }
@@ -111,11 +154,16 @@
   @media (max-width: 480px) { .grid-4 { grid-template-columns: 1fr; } }
   .benefit {
     background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-    padding: 1.6rem 1.3rem; text-align: center;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    padding: 1.7rem 1.3rem; text-align: center;
+    box-shadow: 0 10px 24px -18px rgba(26,20,16,0.4);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
-  .benefit:hover { transform: translateY(-3px); box-shadow: 0 12px 28px -16px rgba(26,20,16,0.25); }
-  .benefit .ico { font-size: 1.9rem; margin-bottom: 0.7rem; }
+  .benefit:hover { transform: translateY(-4px) rotate(-0.5deg); box-shadow: 0 18px 34px -18px rgba(26,20,16,0.3); }
+  .benefit .ico {
+    width: 3rem; height: 3rem; margin: 0 auto 0.8rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    background: var(--marigold-pale);
+  }
   .benefit b { display: block; font-size: 1rem; line-height: 1.35; }
 
   /* ---- feature cards (A1/A2/B) ---- */
@@ -123,7 +171,10 @@
   @media (max-width: 780px) { .grid-3 { grid-template-columns: 1fr; } }
   .feature {
     background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 1.8rem;
+    box-shadow: 0 14px 30px -22px rgba(26,20,16,0.45);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
+  .feature:hover { transform: translateY(-3px); box-shadow: 0 20px 36px -20px rgba(26,20,16,0.32); }
   .feature .ico {
     width: 3rem; height: 3rem; border-radius: 12px; display: flex; align-items: center; justify-content: center;
     font-size: 1.4rem; background: var(--marigold-pale); margin-bottom: 1rem;
@@ -197,19 +248,38 @@
 </nav>
 
 <header class="hero wrap">
-  <span class="eyebrow">Para tiendas de abarrotes en México</span>
-  <h1>¿Ya sabe si está <em>cobrando bien</em>?</h1>
-  <p class="sub">Un compa por WhatsApp que se lo dice al toque — cómo anda contra el súper, cómo andan otros tenderos de su zona, y su margen real. Sin apps, sin costo para empezar.</p>
-  <div class="ctas">
-    <a class="btn-primary" href="#" aria-disabled="true">Escribirle a Don Precio →</a>
-    <a class="btn-secondary" href="#como-funciona">Ver cómo funciona</a>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Para tiendas de abarrotes en México</span>
+      <h1>¿Ya sabe si está <em>cobrando bien</em>?</h1>
+      <p class="sub">Un compa por WhatsApp que se lo dice al toque — cómo anda contra el súper, cómo andan otros tenderos de su zona, y su margen real. Sin apps, sin costo para empezar.</p>
+      <div class="ctas">
+        <a class="btn-primary" href="#" aria-disabled="true">Escribirle a Don Precio →</a>
+        <a class="btn-secondary" href="#como-funciona">Ver cómo funciona</a>
+      </div>
+    </div>
+    <div class="hero-mascot reveal">
+      <div class="hero-badge">"Ya sé cómo ando" 🎉</div>
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="120" cy="120" r="118" fill="#eab13a"/>
+        <path d="M55,240 Q58,168 120,163 Q182,168 185,240 Z" fill="#d0492f"/>
+        <path d="M93,178 L120,202 L147,178 L142,164 L98,164 Z" fill="#f0e4c9"/>
+        <ellipse cx="120" cy="108" rx="53" ry="57" fill="#e8b98c"/>
+        <ellipse cx="65" cy="110" rx="10" ry="15" fill="#e8b98c"/>
+        <ellipse cx="175" cy="110" rx="10" ry="15" fill="#e8b98c"/>
+        <path d="M68,92 Q64,55 120,53 Q176,55 172,92 Q166,66 120,64 Q74,66 68,92 Z" fill="#e4ddc9"/>
+        <circle cx="99" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
+        <circle cx="141" cy="106" r="15" fill="none" stroke="#1a1410" stroke-width="4.5"/>
+        <line x1="114" y1="106" x2="126" y2="106" stroke="#1a1410" stroke-width="4.5"/>
+        <line x1="84" y1="102" x2="70" y2="98" stroke="#1a1410" stroke-width="4"/>
+        <line x1="156" y1="102" x2="170" y2="98" stroke="#1a1410" stroke-width="4"/>
+        <path d="M82,133 Q101,150 120,137 Q139,150 158,133 Q140,124 120,129 Q100,124 82,133 Z" fill="#e4ddc9"/>
+        <path d="M104,151 Q120,162 136,151" fill="none" stroke="#1a1410" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+    </div>
   </div>
 
   <div class="stats reveal">
-    <div class="stat">
-      <div class="n num">1.05M</div>
-      <div class="l">tiendas de abarrotes en México</div>
-    </div>
     <div class="stat">
       <div class="n num">15</div>
       <div class="l">consultas gratis cada mes, sin tarjeta</div>
@@ -218,10 +288,14 @@
       <div class="n num">$0</div>
       <div class="l">costo para empezar</div>
     </div>
+    <div class="stat">
+      <div class="n num">1 min</div>
+      <div class="l">para registrar su tienda</div>
+    </div>
   </div>
 </header>
 
-<section id="como-funciona">
+<section id="como-funciona" class="bold">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow-line">Así de fácil</div>
@@ -260,12 +334,13 @@
       <h2>Le contesta como un compa, no como un robot</h2>
     </div>
     <div class="demo-shell reveal">
+      <div class="demo-stamp">conversación real ✓</div>
       <div class="chat-mock">
         <div class="bubble in">compro el aceite a 41 y lo doy a 48</div>
-        <div class="bubble out">🏪 En el súper anda en $35.29 el litro
-⚠️ Usted lo tiene 36% más caro
+        <div class="bubble out">🏪 En el súper anda en $58.00 el litro
+✅ Usted lo tiene 17% más barato
 🟢 Su margen: 14.6%
-💡 Le conviene bajarlo a $34.23</div>
+💡 Podría subirlo a $51.25 y sigue más barato que el súper, con mejor margen</div>
       </div>
     </div>
   </div>
