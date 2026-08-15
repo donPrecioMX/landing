@@ -34,7 +34,7 @@
   nav.top { padding: 1.4rem 0; }
   nav.top .row { display: flex; align-items: center; justify-content: space-between; }
   .brand { display: flex; align-items: center; gap: 0.55rem; font-weight: 700; font-size: 1.08rem; }
-  .brand svg, .brand img { width: 32px; height: 32px; flex-shrink: 0; }
+  .brand svg, .brand img { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; }
   a.login-link {
     font-size: 0.9rem; font-weight: 600; color: var(--ink);
     text-decoration: none; border-bottom: 2px solid var(--marigold); padding-bottom: 2px;
@@ -58,18 +58,12 @@
   .hero .ctas { margin-top: 2.1rem; display: flex; gap: 1rem; flex-wrap: wrap; }
 
   .hero-mascot { position: relative; display: flex; justify-content: center; }
-  .hero-mascot svg, .hero-mascot img { width: min(320px, 78vw); height: auto; filter: drop-shadow(0 24px 34px rgba(26,20,16,0.22)); }
+  .hero-mascot svg, .hero-mascot img { width: min(320px, 78vw); height: auto; border-radius: 50%; filter: drop-shadow(0 24px 34px rgba(26,20,16,0.22)); }
   .hero-mascot::before {
     content: ""; position: absolute; inset: 6% 10%; border-radius: 50%;
     background: radial-gradient(circle, var(--marigold-pale) 0%, transparent 68%);
     z-index: -1;
   }
-  .hero-badge {
-    position: absolute; top: 0; right: 6px; background: var(--ink); color: var(--paper);
-    border-radius: 14px; padding: 0.6rem 1rem; font-size: 0.92rem; font-weight: 700;
-    white-space: nowrap; box-shadow: 0 10px 22px -10px rgba(26,20,16,0.35); transform: rotate(-4deg);
-  }
-  @media (max-width: 900px) { .hero-badge { display: none; } }
 
   .btn-primary {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -294,7 +288,6 @@
       </div>
     </div>
     <div class="hero-mascot reveal">
-      <div class="hero-badge">✅ "Ya sé cómo ando"</div>
       <img src="mascot.svg" alt="Mascota de Don Precio, un tendero sonriente">
     </div>
   </div>
