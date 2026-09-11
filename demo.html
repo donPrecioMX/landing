@@ -171,7 +171,7 @@
 <header class="hero wrap">
   <span class="eyebrow">Tour interactivo</span>
   <h1>Todo lo que Don Precio hace por un tendero, <em>de principio a fin</em></h1>
-  <p class="sub">Nueve momentos reales, uno por uno. Dele "siguiente" a su ritmo.</p>
+  <p class="sub">Diez momentos reales, uno por uno. Dele "siguiente" a su ritmo.</p>
 </header>
 
 <section>
@@ -219,9 +219,15 @@
   // Cada paso es un momento real del producto — los mensajes de WhatsApp
   // (in/out) reproducen el formato exacto que arma el backend (emojis,
   // orden de líneas), no una versión "bonita" inventada para el demo.
-  // Los pasos 3 y 4 no tienen burbuja "in" a propósito: son los únicos dos
-  // que Don Precio manda por su cuenta, sin que el tendero pregunte nada.
+  // Los pasos "Alertas proactivas" y "Resumen quincenal automático" no tienen
+  // burbuja "in" a propósito: son los únicos dos que Don Precio manda por su
+  // cuenta, sin que el tendero pregunte nada.
   const STEPS = [
+    {
+      label: 'Cómo registrarse',
+      caption: 'Sin descargar nada, sin contraseña — solo escríbale por WhatsApp como a un conocido de confianza.',
+      type: 'register',
+    },
     {
       label: 'Consulta de precio vs. el súper',
       caption: 'Pregunta por cualquier producto y compara contra los súpers grandes de su zona.',
@@ -313,6 +319,17 @@
       </div>
     </div>`;
 
+  const REGISTER_HTML = `
+    <div class="demo-shell">
+      <div class="chat-mock">
+        <div class="bubble in">Hola, buenas tardes 👋</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:1.4rem;">
+      <p style="font-size:1.05rem; margin:0 0 1.1rem;">Escríbale al <strong class="num" style="font-size:1.3rem;">33 2619 3829</strong></p>
+      <a class="btn-primary" style="padding:1.15rem 2.4rem; font-size:1.15rem; box-shadow:0 14px 28px -12px rgba(234,177,58,0.5);" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">💬 Escribirle ahora →</a>
+    </div>`;
+
   (function () {
     const listEl = document.getElementById('step-list');
     const contentEl = document.getElementById('stage-content');
@@ -338,6 +355,8 @@
 
       if (step.type === 'dashboard') {
         contentEl.innerHTML = DASHBOARD_HTML;
+      } else if (step.type === 'register') {
+        contentEl.innerHTML = REGISTER_HTML;
       } else {
         const bubbles = step.bubbles.map((b) => `<div class="bubble ${b.side}">${b.text.replace(/</g, '&lt;')}</div>`).join('');
         contentEl.innerHTML = `<div class="demo-shell"><div class="chat-mock">${bubbles}</div></div>`;
