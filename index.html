@@ -72,10 +72,8 @@
     transition: transform 0.15s ease, background 0.15s ease;
   }
   .btn-primary:hover { background: var(--marigold-deep); transform: translateY(-1px); }
-  /* Deshabilitado a proposito hasta conectar WhatsApp real (paso 7 del
-     lanzamiento) — antes solo se veia como un boton mal hecho (color
-     apagado sin explicacion). Ahora dice claramente "muy pronto" con un
-     tratamiento con guiones que lee como "en construccion", no como error. */
+  /* WhatsApp ya está conectado (2026-09-11) — este estilo se queda sin usar
+     por si algún botón necesita volver a mostrarse como "próximamente". */
   .btn-primary[aria-disabled="true"] {
     background: transparent; color: var(--ink-soft); border: 2px dashed var(--line);
     cursor: not-allowed; pointer-events: none;
@@ -283,7 +281,7 @@
       <h1>¿Ya sabe si está <em>cobrando bien</em>?</h1>
       <p class="sub">Un compa por WhatsApp que se lo dice al toque — cómo anda contra el súper, cómo andan otros tenderos de su zona, y su margen real. Sin apps, sin costo para empezar.</p>
       <div class="ctas">
-        <a class="btn-primary" href="#" aria-disabled="true">🕐 Muy pronto por WhatsApp</a>
+        <a class="btn-primary" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">💬 Escríbale por WhatsApp</a>
         <a class="btn-secondary" href="#como-funciona">Ver cómo funciona</a>
         <a class="btn-secondary" href="demo.html">Tour interactivo →</a>
       </div>
@@ -320,8 +318,11 @@
         <div class="n num">01</div>
         <div>
           <h3>Mándele un WhatsApp a Don Precio</h3>
-          <p>Sin descargar nada, sin crear cuenta con contraseña. Solo escríbale como le escribiría a un conocido de confianza.</p>
+          <p>Sin descargar nada, sin crear cuenta con contraseña. Solo escríbale como le escribiría a un conocido de confianza, al <strong>33 2619 3829</strong>.</p>
           <div class="mini-bubble">Hola, buenas tardes 👋</div>
+          <div style="margin-top:0.9rem;">
+            <a class="btn-primary" style="padding:0.7rem 1.4rem; font-size:0.92rem;" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">💬 Escribirle ahora →</a>
+          </div>
         </div>
       </div>
       <div class="step reveal">
@@ -492,7 +493,7 @@
     <h2>Sepa si está cobrando bien, hoy mismo</h2>
     <p>Un mensaje, y ya sabe cómo anda contra el súper y contra otros tenderos de su zona.</p>
     <div class="ctas">
-      <a class="btn-primary" href="#" aria-disabled="true">🕐 Muy pronto por WhatsApp</a>
+      <a class="btn-primary" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">💬 Escríbale por WhatsApp</a>
     </div>
     <p class="price-note">Sus precios y su costo son suyos — nunca se comparten con el cliente.</p>
   </div>
@@ -512,9 +513,6 @@
 </footer>
 
 <script>
-  // TODO: en cuanto exista el número real de WhatsApp Business (paso 7 del
-  // lanzamiento), reemplazar los href="#" con aria-disabled por:
-  // https://wa.me/52XXXXXXXXXX?text=Hola%20Don%20Precio — y quitar aria-disabled.
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
