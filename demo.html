@@ -99,6 +99,13 @@
   }
   .bubble:last-child { margin-bottom: 0; }
 
+  .phone-chip {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: var(--marigold); color: var(--ink); font-weight: 800;
+    letter-spacing: 0.02em; font-size: 1.2rem; font-variant-numeric: tabular-nums;
+    padding: 0.3rem 1rem; border-radius: 999px; white-space: nowrap;
+  }
+
   /* ---- dashboard mockup (paso 5, portal web) ---- */
   .dash-mock {
     background: var(--card); border: 1px solid var(--line); border-radius: 20px;
@@ -326,7 +333,7 @@
       </div>
     </div>
     <div style="text-align:center; margin-top:1.4rem;">
-      <p style="font-size:1.05rem; margin:0 0 1.1rem;">Escríbale al <strong class="num" style="font-size:1.3rem;">33 2619 3829</strong></p>
+      <p style="font-size:1.05rem; margin:0 0 1.1rem;">Escríbale al <span class="phone-chip">📱 33 2619 3829</span></p>
       <a class="btn-primary" style="padding:1.15rem 2.4rem; font-size:1.15rem; box-shadow:0 14px 28px -12px rgba(234,177,58,0.5);" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">💬 Escribirle ahora →</a>
     </div>`;
 
