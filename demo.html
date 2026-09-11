@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don Precio — Tour interactivo</title>
+<meta name="description" content="Recorra, paso a paso, todo lo que Don Precio hace por un tendero — desde una consulta de precio hasta el corte de caja del día.">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<style>
+  :root {
+    --paper: #f8f3e6; --paper-deep: #f0e6cc; --card: #fffdf8;
+    --ink: #1a1410; --ink-soft: #6b5d4c; --line: #e2d5b3;
+    --marigold: #eab13a; --marigold-deep: #c98a1e; --marigold-pale: #fdf2dc;
+    --oxide: #d0492f; --oxide-deep: #a03621;
+    --sage: #4f7a3f; --sage-pale: #e9f1e3;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(circle, rgba(208,73,47,0.07) 1.6px, transparent 1.7px);
+    background-size: 26px 26px;
+  }
+  h1, h2, h3, .display { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-weight: 700; text-wrap: balance; margin: 0; }
+  a { color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-left: 1.6rem; padding-right: 1.6rem; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---- nav ---- */
+  nav.top { padding: 1.4rem 0; }
+  nav.top .row { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 0.55rem; font-weight: 700; font-size: 1.08rem; }
+  .brand svg, .brand img { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; }
+  a.login-link {
+    font-size: 0.9rem; font-weight: 600; color: var(--ink);
+    text-decoration: none; border-bottom: 2px solid var(--marigold); padding-bottom: 2px;
+  }
+  a.login-link:hover { color: var(--oxide-deep); border-color: var(--oxide); }
+
+  /* ---- hero (compacto, esta pagina no vende, orienta) ---- */
+  .hero { padding: 2.2rem 0 1rem; text-align: center; }
+  .eyebrow {
+    display: inline-block; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--oxide-deep); font-weight: 700; margin-bottom: 1rem;
+    background: var(--marigold-pale); padding: 0.35rem 0.9rem; border-radius: 999px;
+  }
+  .hero h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.12; letter-spacing: -0.01em; max-width: 26ch; margin: 0 auto; }
+  .hero h1 em { font-style: normal; color: var(--oxide); }
+  .hero .sub { font-size: 1.08rem; color: var(--ink-soft); max-width: 46ch; margin: 1rem auto 0; line-height: 1.55; }
+
+  section { padding: 3rem 0; }
+  .section-head { text-align: center; max-width: 42ch; margin: 0 auto 2rem; }
+
+  /* ---- tour layout ---- */
+  .tour { display: grid; grid-template-columns: 300px 1fr; gap: 2rem; align-items: start; }
+  @media (max-width: 860px) { .tour { grid-template-columns: 1fr; } }
+
+  .step-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .step-item {
+    display: flex; align-items: flex-start; gap: 0.8rem; text-align: left;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 0.85rem 1rem; cursor: pointer; font: inherit; color: var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .step-item:hover { transform: translateX(2px); }
+  .step-item .n {
+    flex-shrink: 0; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    background: var(--marigold-pale); color: var(--oxide-deep); font-weight: 700; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; font-family: Georgia, serif;
+  }
+  .step-item .t { font-size: 0.92rem; font-weight: 600; line-height: 1.3; margin-top: 0.15rem; }
+  .step-item.active {
+    border-color: var(--oxide); box-shadow: 0 10px 22px -16px rgba(160,54,33,0.45);
+  }
+  .step-item.active .n { background: var(--oxide); color: var(--paper); }
+
+  .tour-stage { position: relative; }
+  .stage-progress {
+    text-align: center; font-size: 0.85rem; color: var(--ink-soft); font-weight: 600;
+    margin-bottom: 0.9rem;
+  }
+  .demo-shell { max-width: 460px; margin: 0 auto; position: relative; }
+  .chat-mock {
+    background: var(--ink); border-radius: 20px; padding: 1.6rem; min-height: 220px;
+    box-shadow: 0 28px 60px -22px rgba(26,20,16,0.5);
+    transform: rotate(-1.2deg);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .bubble { border-radius: 14px; padding: 0.8rem 1.05rem; margin-bottom: 0.75rem; font-size: 0.95rem; line-height: 1.45; max-width: 92%; white-space: pre-wrap; }
+  .bubble.in { background: #3a2e21; color: #f0e4c9; border-bottom-left-radius: 3px; }
+  .bubble.out { background: var(--sage); color: #f4fbf0; margin-left: auto; border-bottom-right-radius: 3px; font-size: 0.9rem; }
+  .bubble.system {
+    background: transparent; color: #c9bda3; margin: 0 auto 0.9rem; text-align: center;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; max-width: 100%;
+  }
+  .bubble:last-child { margin-bottom: 0; }
+
+  /* ---- dashboard mockup (paso 5, portal web) ---- */
+  .dash-mock {
+    background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+    padding: 1.5rem; box-shadow: 0 28px 60px -26px rgba(26,20,16,0.35); max-width: 460px; margin: 0 auto;
+  }
+  .dash-mock .dash-title { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; margin-bottom: 0.9rem; }
+  .dash-row { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0; border-top: 1px solid var(--line); font-size: 0.92rem; }
+  .dash-row:first-of-type { border-top: none; }
+  .dash-row .p { font-weight: 600; }
+  .dash-row .m { color: var(--ink-soft); font-size: 0.85rem; }
+  .dash-pill { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+  .dash-pill.good { background: var(--sage-pale); color: #2f4d24; }
+  .dash-pill.warn { background: var(--marigold-pale); color: var(--oxide-deep); }
+  .dash-close { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; gap: 0.6rem; font-size: 0.9rem; }
+  .dash-close b { font-family: Georgia, serif; }
+  @media (max-width: 420px) { .dash-close { flex-direction: column; gap: 0.3rem; } }
+
+  .stage-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.3rem; }
+  .demo-arrow {
+    width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink); font-size: 1.3rem; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s ease;
+  }
+  .demo-arrow:hover { background: var(--marigold-pale); }
+  .stage-caption { text-align: center; font-size: 0.92rem; color: var(--ink-soft); margin-top: 1rem; max-width: 40ch; margin-left: auto; margin-right: auto; }
+
+  .final-cta { text-align: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--marigold); color: var(--ink); font-weight: 700; font-size: 1.02rem;
+    padding: 0.95rem 1.8rem; border-radius: 999px; text-decoration: none;
+  }
+  .btn-primary[aria-disabled="true"] {
+    background: transparent; color: var(--ink-soft); border: 2px dashed var(--line);
+    cursor: not-allowed; pointer-events: none;
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--ink); font-weight: 600; font-size: 1rem; text-decoration: none;
+    padding: 0.95rem 1rem; border-bottom: 2px solid transparent;
+  }
+  .btn-secondary:hover { border-color: var(--ink); }
+  .ctas { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 1.6rem; }
+
+  footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--line); margin-top: 2rem; }
+  footer .row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  footer .brand-mini { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; }
+  footer .brand-mini svg { width: 22px; height: 22px; }
+  footer .meta { font-size: 0.85rem; color: var(--ink-soft); }
+  footer .meta a { text-decoration: underline; text-underline-offset: 2px; }
+
+  ::selection { background: var(--marigold); color: var(--ink); }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+
+<nav class="top wrap">
+  <div class="row">
+    <div class="brand">
+      <img src="mascot.svg" alt="" aria-hidden="true">
+      Don Precio
+    </div>
+    <a class="login-link" href="index.html">← Volver al sitio</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <span class="eyebrow">Tour interactivo</span>
+  <h1>Todo lo que Don Precio hace por un tendero, <em>de principio a fin</em></h1>
+  <p class="sub">Nueve momentos reales, uno por uno. Dele "siguiente" a su ritmo.</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="tour reveal">
+      <div class="step-list" id="step-list"></div>
+      <div class="tour-stage">
+        <div class="stage-progress" id="stage-progress"></div>
+        <div id="stage-content"></div>
+        <div class="stage-controls">
+          <button class="demo-arrow" id="stage-prev" type="button" aria-label="Anterior">‹</button>
+          <button class="demo-arrow" id="stage-next" type="button" aria-label="Siguiente">›</button>
+        </div>
+        <p class="stage-caption" id="stage-caption"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap reveal">
+    <h2>¿Y esto en su tienda, cómo se vería?</h2>
+    <p class="sub" style="margin:1rem auto 0;">Un mensaje por WhatsApp y empieza a saber cómo anda contra el súper y contra otros tenderos de su zona.</p>
+    <div class="ctas">
+      <a class="btn-primary" href="#" aria-disabled="true">🕐 Muy pronto por WhatsApp</a>
+      <a class="btn-secondary" href="index.html">Ver el sitio completo →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <div class="brand-mini">
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="120" cy="120" r="118" fill="#eab13a"/>
+        <path d="M55,240 Q58,168 120,163 Q182,168 185,240 Z" fill="#d0492f"/>
+      </svg>
+      Don Precio
+    </div>
+    <div class="meta">© 2026 Don Precio · Guadalajara, Jalisco · <a href="https://ingreso.donprecio.mx">Portal del tendero</a> · <a href="/privacidad.html">Privacidad</a> · <a href="/terminos.html">Condiciones</a></div>
+  </div>
+</footer>
+
+<script>
+  // Cada paso es un momento real del producto — los mensajes de WhatsApp
+  // (in/out) reproducen el formato exacto que arma el backend (emojis,
+  // orden de líneas), no una versión "bonita" inventada para el demo.
+  // Los pasos 3 y 4 no tienen burbuja "in" a propósito: son los únicos dos
+  // que Don Precio manda por su cuenta, sin que el tendero pregunte nada.
+  const STEPS = [
+    {
+      label: 'Consulta de precio vs. el súper',
+      caption: 'Pregunta por cualquier producto y compara contra los súpers grandes de su zona.',
+      type: 'chat',
+      bubbles: [
+        { side: 'in', text: 'oye cómo ando en el arroz' },
+        { side: 'out', text: '🏪 Supermercados en su zona: prom $18.22/kg (4 cadenas)\n🏘️ Otros tenderos venden en: prom $24.00 (9 tiendas)\n💬 ¿Y usted en cuánto lo tiene?' },
+      ],
+    },
+    {
+      label: 'Le dice si está caro o barato',
+      caption: 'Calcula su margen real al momento y le sugiere un precio de venta.',
+      type: 'chat',
+      bubbles: [
+        { side: 'in', text: 'compro el aceite a 41 y lo doy a 48' },
+        { side: 'out', text: '🏪 En el súper anda en $58.00 el litro\n✅ Usted lo tiene 17% más barato\n🟢 Su margen: 14.6%\n💡 Podría subirlo a $51.25 y sigue más barato que el súper, con mejor margen' },
+      ],
+    },
+    {
+      label: 'Alertas proactivas',
+      caption: 'Sin que pregunte nada — le avisa solo cuando un producto que vende se mueve de precio.',
+      type: 'chat',
+      bubbles: [
+        { side: 'system', text: 'Don Precio le escribe primero' },
+        { side: 'out', text: '📈 Ojo con este producto\n📦 Refresco Cola 600 ml\nTu último precio reportado: $18.00\nAhora el precio de referencia en tu ciudad anda en: $15.50\n\nEstás 16% más caro que la referencia — quizás valga la pena revisarlo.' },
+      ],
+    },
+    {
+      label: 'Resumen quincenal automático',
+      caption: 'Los días 1 y 15 de cada mes, un balance de qué producto necesita atención, qué costos están subiendo, y cómo se mueve su zona.',
+      type: 'chat',
+      bubbles: [
+        { side: 'system', text: 'Se manda solo, días 1 y 15' },
+        { side: 'out', text: '📊 Resumen quincenal de Abarrotes La Esquina\n\nEl que más atención necesita: Coca-Cola 3L\n  Estás 8% más caro que la referencia.\n\nCostos que están subiendo:\n  • Aceite Nutrioli: +9% en el último mes\n\n📍 Radar de tu zona:\n  • Huevo bajó 5% esta quincena (6 tenderos lo reportaron)\n\nEscríbeme cuando quieras para revisar cualquier producto. 🛒' },
+      ],
+    },
+    {
+      label: 'Portal web con dashboard',
+      caption: 'Todo lo anterior, también en una pantalla — margen, tendencia y sugerencia por producto.',
+      type: 'dashboard',
+    },
+    {
+      label: 'Comparación con otros tenderos',
+      caption: 'No solo contra el súper — sabe si está más caro o más barato que la competencia real de su zona.',
+      type: 'chat',
+      bubbles: [
+        { side: 'in', text: 'cómo ando comparado con los demás tenderos en la coca de 600ml' },
+        { side: 'out', text: '🏘️ Otros tenderos venden en: prom $17.50 (11 tiendas)\n🏪 Supermercados en su zona: prom $15.80 (5 cadenas)\n💬 Usted la tiene en $18.00 — un poco arriba de ambos, ¿la ajustamos?' },
+      ],
+    },
+    {
+      label: 'Foto de la factura del proveedor',
+      caption: 'Le toma foto a la factura del mayorista/CEDIS y carga el costo de todos los productos de un jalón.',
+      type: 'chat',
+      bubbles: [
+        { side: 'in', text: '📷 [Foto: factura de Abarrotera del Centro]' },
+        { side: 'out', text: '📋 Cargué el costo de 24 productos de Abarrotera del Centro:\n   • Coca-Cola 600 ml: $12.50\n   • Aceite Nutrioli 850 ml: $38.00\n   • Arroz Verde Valle 900 g: $16.20\n   ...y 21 más\n\nYa no necesitas repetirme estos costos — la próxima vez que preguntes por alguno, te doy margen directo. 💡' },
+      ],
+    },
+    {
+      label: 'Foto de su lista de precios',
+      caption: 'Le toma foto a su propia lista (producto, compra, venta) y calcula margen y precio sugerido de todos.',
+      type: 'chat',
+      bubbles: [
+        { side: 'in', text: '📷 [Foto: mi lista de precios]' },
+        { side: 'out', text: '📊 Revisé 3 productos:\n\n📦 Coca-Cola 600 ml\n   🟡 Tu margen: 8% ($1.50 por pieza).\n   💡 Sugerido: $15.50\n📦 Aceite Nutrioli 850 ml\n   🟢 Tu margen: 22% ($9.50 por pieza).\n📦 Arroz Verde Valle 900 g\n   🟢 Tu margen: 25% ($4.10 por pieza).' },
+      ],
+    },
+    {
+      label: 'Corte de caja del día',
+      caption: 'Le escribe cuánto vendió y gastó hoy, y se lo guarda con su neto.',
+      type: 'chat',
+      bubbles: [
+        { side: 'in', text: 'hoy vendí 2800, gasté 350' },
+        { side: 'out', text: '📒 Corte de hoy guardado\n💰 Vendió: $2,800.00\n💸 Gastó: $350.00\n✅ Neto: $2,450.00' },
+      ],
+    },
+  ];
+
+  const DASHBOARD_HTML = `
+    <div class="dash-mock">
+      <div class="dash-title">portal.donprecio.mx</div>
+      <div class="dash-row"><div><div class="p">Coca-Cola 600 ml</div><div class="m">Sugerido: $15.50</div></div><span class="dash-pill warn">8% margen</span></div>
+      <div class="dash-row"><div><div class="p">Aceite Nutrioli 850 ml</div><div class="m">Sugerido: $51.25</div></div><span class="dash-pill good">14.6% margen</span></div>
+      <div class="dash-row"><div><div class="p">Arroz Verde Valle 900 g</div><div class="m">Sugerido: $18.00</div></div><span class="dash-pill good">25% margen</span></div>
+      <div class="dash-close">
+        <span>Corte de hoy</span>
+        <b>Vendió $2,800 · Gastó $350 · Neto $2,450</b>
+      </div>
+    </div>`;
+
+  (function () {
+    const listEl = document.getElementById('step-list');
+    const contentEl = document.getElementById('stage-content');
+    const progressEl = document.getElementById('stage-progress');
+    const captionEl = document.getElementById('stage-caption');
+    const prevBtn = document.getElementById('stage-prev');
+    const nextBtn = document.getElementById('stage-next');
+    let index = 0;
+
+    STEPS.forEach((step, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'step-item';
+      btn.type = 'button';
+      btn.innerHTML = `<span class="n num">${i + 1}</span><span class="t">${step.label}</span>`;
+      btn.addEventListener('click', () => { index = i; render(); });
+      listEl.appendChild(btn);
+    });
+
+    function render() {
+      const step = STEPS[index];
+      progressEl.textContent = `Paso ${index + 1} de ${STEPS.length}`;
+      captionEl.textContent = step.caption;
+
+      if (step.type === 'dashboard') {
+        contentEl.innerHTML = DASHBOARD_HTML;
+      } else {
+        const bubbles = step.bubbles.map((b) => `<div class="bubble ${b.side}">${b.text.replace(/</g, '&lt;')}</div>`).join('');
+        contentEl.innerHTML = `<div class="demo-shell"><div class="chat-mock">${bubbles}</div></div>`;
+      }
+
+      document.querySelectorAll('.step-item').forEach((el, i) => el.classList.toggle('active', i === index));
+    }
+
+    prevBtn.addEventListener('click', () => { index = (index - 1 + STEPS.length) % STEPS.length; render(); });
+    nextBtn.addEventListener('click', () => { index = (index + 1) % STEPS.length; render(); });
+
+    render();
+  })();
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+  }
+</script>
+
+</body>
+</html>
