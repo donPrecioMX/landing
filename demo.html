@@ -99,13 +99,17 @@
   }
   .bubble:last-child { margin-bottom: 0; }
 
+  /* El numero ES el enlace — tocarlo abre WhatsApp directo, sin boton
+     aparte ni tamaño gigante que se rompa en pantallas chicas. */
   .phone-chip {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--marigold); color: var(--ink);
+    background: var(--marigold); color: var(--ink); text-decoration: none;
     font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-weight: 700;
-    letter-spacing: 0.01em; font-size: clamp(1.5rem, 4vw, 2rem); font-variant-numeric: tabular-nums;
-    padding: 0.4rem 1.2rem; border-radius: 999px; white-space: nowrap;
+    letter-spacing: 0.01em; font-size: 1.3rem; font-variant-numeric: tabular-nums;
+    padding: 0.4rem 1.1rem; border-radius: 999px; white-space: nowrap;
+    transition: transform 0.15s ease, background 0.15s ease;
   }
+  .phone-chip:hover { background: var(--marigold-deep); transform: translateY(-1px); }
 
   /* ---- dashboard mockup (paso 5, portal web) ---- */
   .dash-mock {
@@ -334,8 +338,8 @@
       </div>
     </div>
     <div style="text-align:center; margin-top:1.4rem;">
-      <p style="font-size:1.05rem; margin:0 0 1.1rem;">Escríbale al <span class="phone-chip">📱 33 2619 3829</span></p>
-      <a class="btn-primary" style="padding:1.15rem 2.4rem; font-size:1.15rem; box-shadow:0 14px 28px -12px rgba(234,177,58,0.5);" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">💬 Escribirle ahora →</a>
+      <p style="font-size:1.05rem; margin:0 0 0.9rem;">Escríbale al</p>
+      <a class="phone-chip" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">📱 33 2619 3829</a>
     </div>`;
 
   (function () {

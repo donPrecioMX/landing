@@ -142,16 +142,18 @@
     font-size: 0.9rem; max-width: 300px;
   }
 
-  /* Numero de whatsapp, tratado como una chip solida en vez de negritas
-     sueltas dentro del parrafo — se lee de un vistazo, funciona igual sobre
-     fondo claro u oscuro porque el pill es opaco. */
+  /* Numero de whatsapp: el numero ES el enlace — tocarlo abre WhatsApp
+     directo, así no hace falta un botón aparte ni un tamaño gigante que se
+     rompa en pantallas chicas. Tamaño fijo moderado, no clamp. */
   .phone-chip {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--marigold); color: var(--ink);
+    background: var(--marigold); color: var(--ink); text-decoration: none;
     font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-weight: 700;
-    letter-spacing: 0.01em; font-size: clamp(1.5rem, 4vw, 2rem); font-variant-numeric: tabular-nums;
-    padding: 0.4rem 1.2rem; border-radius: 999px; white-space: nowrap;
+    letter-spacing: 0.01em; font-size: 1.3rem; font-variant-numeric: tabular-nums;
+    padding: 0.4rem 1.1rem; border-radius: 999px; white-space: nowrap;
+    transition: transform 0.15s ease, background 0.15s ease;
   }
+  .phone-chip:hover { background: var(--marigold-deep); transform: translateY(-1px); }
 
   /* ---- demo chat ---- */
   .demo-shell { max-width: 480px; margin: 0 auto; position: relative; }
@@ -330,11 +332,10 @@
         <div>
           <h3>Mándele un WhatsApp a Don Precio</h3>
           <p>Sin descargar nada, sin crear cuenta con contraseña. Solo escríbale como le escribiría a un conocido de confianza, al</p>
-          <p style="margin-top:0.6rem;"><span class="phone-chip">📱 33 2619 3829</span></p>
+          <p style="margin-top:0.6rem;">
+            <a class="phone-chip" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">📱 33 2619 3829</a>
+          </p>
           <div class="mini-bubble">Hola, buenas tardes 👋</div>
-          <div style="margin-top:1.1rem;">
-            <a class="btn-primary" style="padding:1.15rem 2.4rem; font-size:1.15rem; box-shadow:0 14px 28px -12px rgba(234,177,58,0.5);" href="https://wa.me/5213326193829?text=Hola%2C%20buenas%20tardes%20%F0%9F%91%8B" target="_blank" rel="noopener">💬 Escribirle ahora →</a>
-          </div>
         </div>
       </div>
       <div class="step reveal">
